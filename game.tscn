@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://dg737v37qvdy"]
+
+[node name="Main" type="Node2D"]
+
+[node name="GameMode-bg" type="TextureRect" parent="."]
+offset_right = 1172.0
+offset_bottom = 650.0
+metadata/_edit_use_anchors_ = true
+
+[node name="SpeedTest-bg" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
