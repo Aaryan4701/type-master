@@ -1,12 +1,114 @@
-[gd_scene format=3 uid="uid://dg737v37qvdy"]
+[gd_scene load_steps=12 format=3 uid="uid://dg737v37qvdy"]
 
-[node name="Main" type="Node2D"]
+[ext_resource type="Texture2D" uid="uid://brf6tf13q20s5" path="res://assets/Backgrounds/pixel-art-illustration-space-background-pixelated-space-space-galaxy-universe-background-pixelated-for-the-pixel-art-game-and-icon-for-website-and-video-game-old-school-retro-vector.jpg" id="1_e2o6t"]
+[ext_resource type="Script" uid="uid://bgx7xfm5no5rx" path="res://game.gd" id="1_fc0e3"]
+[ext_resource type="FontFile" uid="uid://baaj78y1fnggm" path="res://assets/Fonts/Pixel 2/Pixeled.ttf" id="2_fc0e3"]
+[ext_resource type="Texture2D" uid="uid://kuq81f5f8pgh" path="res://assets/Backgrounds/091cc95737fd417103a9e805e0d779a8.jpg" id="2_feb5d"]
+[ext_resource type="Script" uid="uid://bmfre1m7tv3nj" path="res://speed_mode_bg.gd" id="5_7jktm"]
+[ext_resource type="Script" uid="uid://bwpix1ryl1bt1" path="res://speed_testbutton.gd" id="6_ryrav"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7jktm"]
+font = ExtResource("2_fc0e3")
+font_size = 40
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ryrav"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ryrav"]
+font = ExtResource("2_fc0e3")
+font_size = 40
+
+[sub_resource type="Theme" id="Theme_feb5d"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_eow3j"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_fc0e3")
 
 [node name="GameMode-bg" type="TextureRect" parent="."]
-offset_right = 1172.0
-offset_bottom = 650.0
+layout_mode = 1
+offset_right = 960.0
+offset_bottom = 1080.0
+texture = ExtResource("1_e2o6t")
+expand_mode = 1
+
+[node name="Game Mode" type="Label" parent="GameMode-bg"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.328643
+anchor_top = 0.292864
+anchor_right = 0.682412
+anchor_bottom = 0.396664
+grow_horizontal = 2
+grow_vertical = 2
+text = "GAME MODE"
+label_settings = SubResource("LabelSettings_7jktm")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="GameModebutton" type="Button" parent="GameMode-bg"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3799
+anchor_top = 0.42354
+anchor_right = 0.60804
+anchor_bottom = 0.505097
+offset_right = 23.0
+offset_bottom = 12.0
+theme_override_fonts/font = ExtResource("2_fc0e3")
+theme_override_font_sizes/font_size = 25
+text = "START"
+icon = SubResource("CompressedTexture2D_ryrav")
 metadata/_edit_use_anchors_ = true
 
 [node name="SpeedTest-bg" type="TextureRect" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = -1
+offset_left = 960.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_feb5d")
+expand_mode = 1
+script = ExtResource("5_7jktm")
+
+[node name="Speed Test" type="Label" parent="SpeedTest-bg"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.290288
+anchor_top = 0.288104
+anchor_right = 0.708645
+anchor_bottom = 0.392193
+grow_horizontal = 2
+grow_vertical = 2
+text = "SPEED TEST"
+label_settings = SubResource("LabelSettings_ryrav")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="SpeedTestbutton" type="Button" parent="SpeedTest-bg"]
+layout_mode = 0
+anchor_left = 0.361793
+anchor_top = 0.414498
+anchor_right = 0.621131
+anchor_bottom = 0.506506
+offset_right = 7.0
+offset_bottom = 1.0
+theme = SubResource("Theme_feb5d")
+theme_override_fonts/font = ExtResource("2_fc0e3")
+theme_override_font_sizes/font_size = 25
+text = "START"
+icon = SubResource("CompressedTexture2D_eow3j")
+script = ExtResource("6_ryrav")
+metadata/_edit_use_anchors_ = true
+
+[connection signal="mouse_entered" from="GameMode-bg" to="." method="_on_game_modebg_mouse_entered"]
+[connection signal="mouse_exited" from="GameMode-bg" to="." method="_on_game_modebg_mouse_exited"]
+[connection signal="mouse_entered" from="GameMode-bg/Game Mode" to="." method="_on_game_mode_mouse_entered"]
+[connection signal="mouse_exited" from="GameMode-bg/Game Mode" to="." method="_on_game_mode_mouse_exited"]
+[connection signal="pressed" from="GameMode-bg/GameModebutton" to="." method="_on_game_modebutton_pressed"]
+[connection signal="mouse_entered" from="SpeedTest-bg" to="." method="_on_speed_testbg_mouse_entered"]
+[connection signal="mouse_exited" from="SpeedTest-bg" to="." method="_on_speed_testbg_mouse_exited"]
+[connection signal="pressed" from="SpeedTest-bg/SpeedTestbutton" to="." method="_on_speed_testbutton_pressed"]
