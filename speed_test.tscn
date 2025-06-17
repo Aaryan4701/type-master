@@ -1,5 +1,6 @@
-[gd_scene load_steps=18 format=3 uid="uid://hoihiocre20k"]
+[gd_scene load_steps=19 format=3 uid="uid://hoihiocre20k"]
 
+[ext_resource type="Script" uid="uid://qeoc8ykog7fc" path="res://speed_test.gd" id="1_egqdk"]
 [ext_resource type="Texture2D" uid="uid://ddn4lf0qhly7f" path="res://assets/Backgrounds/black-solid-background-1921-x-1081-pf5l44buz6skcf54.jpg" id="1_nd8mu"]
 [ext_resource type="FontFile" uid="uid://dp1pln75wnlhc" path="res://assets/Fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf" id="2_nvhqq"]
 [ext_resource type="Texture2D" uid="uid://vwx4y6sbwmli" path="res://assets/Images/Screenshot_2025-06-11_at_11.15.36_am-removebg-preview.png" id="2_t4q2a"]
@@ -52,6 +53,7 @@ font = ExtResource("2_nvhqq")
 font_size = 65
 
 [node name="Speed Test" type="Node2D"]
+script = ExtResource("1_egqdk")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 offset_right = 40.0
@@ -131,7 +133,7 @@ offset_bottom = 118.0
 theme = SubResource("Theme_biafy")
 script = ExtResource("7_biafy")
 
-[node name="MenuButton" type="MenuButton" parent="CanvasLayer/Panel"]
+[node name="ThemeMenu" type="MenuButton" parent="CanvasLayer/Panel"]
 layout_mode = 0
 offset_left = 748.5
 offset_top = 43.0
@@ -158,9 +160,37 @@ offset_bottom = 243.0
 text = "Score: "
 label_settings = SubResource("LabelSettings_wxcvt")
 
-[node name="TextDisplay" type="Label" parent="CanvasLayer"]
-offset_right = 40.0
-offset_bottom = 23.0
+[node name="line_labels" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -946.0
+offset_top = -236.0
+offset_right = 945.0
+offset_bottom = 195.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="Line1" type="Label" parent="CanvasLayer/line_labels"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvhqq")
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+
+[node name="Line2" type="Label" parent="CanvasLayer/line_labels"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvhqq")
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
+
+[node name="Line3" type="Label" parent="CanvasLayer/line_labels"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvhqq")
+theme_override_font_sizes/font_size = 50
+horizontal_alignment = 1
 
 [node name="InputField" type="LineEdit" parent="CanvasLayer"]
 offset_left = 12.0
@@ -169,11 +199,22 @@ offset_right = 80.5625
 offset_bottom = 40.0
 
 [node name="TimeRemaining" type="Label" parent="CanvasLayer"]
-offset_right = 40.0
-offset_bottom = 23.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -273.0
+offset_top = 240.0
+offset_right = 273.0
+offset_bottom = 517.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="AllTimeScore" type="Label" parent="CanvasLayer"]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 18.0
+offset_top = 80.0
+offset_right = 58.0
+offset_bottom = 103.0
 
 [node name="Timer" type="Timer" parent="."]
