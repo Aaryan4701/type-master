@@ -1,6 +1,7 @@
 extends Node2D
 
 
+	
 # Sample texts you want to randomly display
 var sample_texts = [
 	"The quick brown fox jumps over the lazy dog near the shimmering riverbank, where morning light gleams across the water’s surface. Birds sing melodious tunes from the treetops, filling the air with a soft, comforting rhythm. A gentle breeze moves through the branches, rustling the leaves and carrying the scent of fresh earth and wildflowers. The sky above glows with soft shades of orange and blue, while squirrels scurry playfully across the ground. Nature awakens slowly, calmly, with grace. As the day begins, this peaceful environment offers quiet reflection and a moment of stillness. The fox stops briefly, listening to the river’s hum before continuing its journey across the mossy stones. Everything moves with purpose but without hurry, as if the world itself breathes slowly. In this perfect moment, the connection between living things and their surroundings is clear, reminding us to pause, to look, and to appreciate the beauty of the present.",
@@ -18,60 +19,235 @@ var sample_texts = [
 	"Storytelling is one of the oldest and most powerful tools humans possess. Across generations, stories have preserved culture, shared lessons, and sparked imagination. From ancient cave paintings and oral traditions to printed books and streaming media, the way we tell stories has evolved—but the purpose remains. Stories entertain, teach, warn, and unite. They allow us to walk in someone else’s shoes, feel distant emotions, and understand complex issues. In every culture, storytelling shapes values, identity, and memory. A well-told tale lingers in the mind, inspiring thought and connection long after the final word. In today’s digital age, stories spread faster and farther than ever. Podcasts, games, films, and interactive media offer new ways to engage audiences. Whether it’s a personal anecdote or an epic saga, every story has the potential to move hearts and change minds. In the end, storytelling is more than communication—it’s the thread that binds people together."
 ]
 
+const MAX_CHARS_PER_CHUNK = 200
+
+# === Node Refs ===
+@onready var typing_text = $CanvasLayer/TypingText
+@onready var time_label = $CanvasLayer/TimeRemaining
+@onready var timer = $Timer
+@onready var button15 = $CanvasLayer/Panel/TimerButtons/Button15
+@onready var button30 = $CanvasLayer/Panel/TimerButtons/Button30
+@onready var button60 = $CanvasLayer/Panel/TimerButtons/Button60
+
+# Stats Labels
+@onready var last_score_label = $CanvasLayer/StatsPanel/LastScore
+@onready var best_wpm_label = $CanvasLayer/StatsPanel/BestWPMLabel
+@onready var score_label = $CanvasLayer/ScoreLabel
+
+# === Typing Game State ===
+var full_text := ""
+var current_index := 0
+var chunk_start_index := 0
+var correctness := []
+var game_active := false
+var time_left := 30
+var has_started_typing := false
+var elapsed_time := 0.0
+var typing_start_time := 0.0
+var selected_time := 30  # default starting time
 
 
-@onready var line1 = $CanvasLayer/line_labels/Line1
-@onready var line2 = $CanvasLayer/line_labels/Line2
-@onready var line3 = $CanvasLayer/line_labels/Line3
+
+# WPM Tracking
+var correct_chars_typed := 0
+var total_chars_typed := 0
+var best_wpm := 0.0
+
+const SAVE_FILE_PATH := "user://best_wpm.save"
 
 func _ready() -> void:
 	randomize()
-	display_random_text()
 
+	button15.focus_mode = Control.FOCUS_NONE
+	button30.focus_mode = Control.FOCUS_NONE
+	button60.focus_mode = Control.FOCUS_NONE
 
-# Helper function to join an Array of strings with a separator
-func join_strings(arr: Array, separator: String = " ") -> String:
-	var result = ""
-	for i in range(arr.size()):
-		result += arr[i]
-		if i < arr.size() - 1:
-			result += separator
-	return result
-	
+	button15.pressed.connect(func(): start_game(15))
+	button30.pressed.connect(func(): start_game(30))
+	button60.pressed.connect(func(): start_game(60))
 
-const MAX_CHARS_PER_LINE = 70  # tweak this based on your label width/font size
+	timer.timeout.connect(_on_timer_timeout)
+	timer.wait_time = 1
+	timer.autostart = false
+	timer.one_shot = false
 
-func display_random_text():
-	var text = sample_texts[randi() % sample_texts.size()]
-	var words = text.split(" ")
+	load_best_wpm()
+	update_best_wpm_label()
 
-	var lines = []
-	var current_line = ""
+	start_game(30)
 
-	for word in words:
-		# Check if adding the new word exceeds the max char limit
-		if current_line.length() + word.length() + 1 <= MAX_CHARS_PER_LINE:
-			if current_line == "":
-				current_line = word
-			else:
-				current_line += " " + word
+func _process(delta):
+	if has_started_typing and game_active:
+		elapsed_time += delta
+
+func start_game(seconds: int):
+	selected_time = seconds
+	time_left = seconds
+	elapsed_time = 0.0
+	game_active = true
+	has_started_typing = false
+	correct_chars_typed = 0
+	total_chars_typed = 0
+	start_new_round()
+	update_time_label()
+	update_current_stats()
+
+func load_best_wpm():
+	if FileAccess.file_exists(SAVE_FILE_PATH):
+		var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.READ)
+		if file:
+			best_wpm = file.get_var()
+			file.close()
+
+func save_best_wpm():
+	var file = FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
+	if file:
+		file.store_var(best_wpm)
+		file.close()
+
+func update_best_wpm_label():
+	best_wpm_label.text = "Best WPM: " + str(round(best_wpm))
+
+func start_new_round():
+	full_text = sample_texts[randi() % sample_texts.size()]
+	current_index = 0
+	chunk_start_index = 0
+	correctness = []
+	for i in full_text.length():
+		correctness.append(null)
+	update_display()
+
+func _on_timer_timeout():
+	if game_active:
+		time_left -= 1
+		update_time_label()
+		update_current_stats()
+
+		if time_left <= 0:
+			game_active = false
+			timer.stop()
+			time_label.text = "Time's up!"
+			calc_and_display_final_stats()
+			await get_tree().create_timer(5).timeout
+			start_game(selected_time)
+
+func update_time_label():
+	time_label.text = str(time_left) + "s"
+
+func update_display():
+	var display_text := ""
+	var chunk_end = min(chunk_start_index + MAX_CHARS_PER_CHUNK, full_text.length())
+	var visible_chunk = full_text.substr(chunk_start_index, chunk_end - chunk_start_index)
+
+	for i in visible_chunk.length():
+		var global_i = chunk_start_index + i
+		var char = visible_chunk[i]
+
+		if correctness[global_i] == true:
+			display_text += "[bgcolor=#ccffcc][color=black]" + char + "[/color][/bgcolor]"
+		elif correctness[global_i] == false:
+			display_text += "[bgcolor=#ffcccc][color=black]" + char + "[/color][/bgcolor]"
+		elif global_i == current_index:
+			display_text += "[u]" + char + "[/u]"
 		else:
-			lines.append(current_line)
-			current_line = word
+			display_text += char
 
-		# Stop if we've already filled 3 lines
-		if lines.size() == 3:
-			break
+	typing_text.text = display_text
+	
+func _input(event: InputEvent) -> void:
+	if not game_active:
+		return
 
-	# Add last line if it fits and we still have room
-	if lines.size() < 3 and current_line != "":
-		lines.append(current_line)
+	if event is InputEventKey and event.pressed and not event.echo:
+		if not has_started_typing:
+			has_started_typing = true
+			typing_start_time = Time.get_ticks_msec()
+			timer.start()
 
-	# Pad with empty lines if less than 3
-	while lines.size() < 3:
-		lines.append("")
 
-	# Set the line labels
-	line1.text = lines[0]
-	line2.text = lines[1]
-	line3.text = lines[2]
+		var key_char: String = char(event.unicode)
+
+		# Handle backspace
+		if event.keycode == KEY_BACKSPACE:
+			if current_index > 0:
+				current_index -= 1
+
+				# Adjust stats when correcting
+				if correctness[current_index] == true:
+					correct_chars_typed = max(correct_chars_typed - 1, 0)
+				if correctness[current_index] != null:
+					total_chars_typed = max(total_chars_typed - 1, 0)
+
+				correctness[current_index] = null
+
+				if current_index < chunk_start_index:
+					chunk_start_index = max(chunk_start_index - MAX_CHARS_PER_CHUNK, 0)
+
+				update_display()
+			return
+
+		# Accept only printable characters
+		if key_char.length() == 1 and current_index < full_text.length():
+			var expected_char := full_text[current_index]
+
+			if key_char == expected_char:
+				correctness[current_index] = true
+				correct_chars_typed += 1
+			else:
+				correctness[current_index] = false
+
+			total_chars_typed += 1
+
+			current_index += 1
+
+			if current_index >= chunk_start_index + MAX_CHARS_PER_CHUNK:
+				chunk_start_index += MAX_CHARS_PER_CHUNK
+
+			if current_index >= full_text.length():
+				game_active = false
+				timer.stop()
+				time_label.text = "Text Complete!"
+				calc_and_display_final_stats()
+				await get_tree().create_timer(1.5).timeout
+				start_game(time_left)
+			else:
+				update_display()
+				update_current_stats()
+
+
+func update_current_stats():
+	if not has_started_typing or total_chars_typed == 0:
+		score_label.text = "WPM: 0  Accuracy: 0%"
+		return
+
+	var elapsed_ms = Time.get_ticks_msec() - typing_start_time
+	var minutes_passed = max(elapsed_ms / 60000.0, 1.0 / 60.0)  # Avoid div by 0
+
+	var wpm = (correct_chars_typed / 5.0) / minutes_passed
+	var accuracy = (correct_chars_typed / float(total_chars_typed)) * 100.0
+
+	score_label.text = "WPM: " + str(round(wpm)) + "  Accuracy: " + str(round(accuracy)) + "%"
+
+
+func calc_and_display_final_stats():
+	if elapsed_time <= 0:
+		elapsed_time = 1.0
+
+	var minutes_passed = elapsed_time / 60.0
+	var wpm = (correct_chars_typed / 5.0) / minutes_passed
+
+	var accuracy = 0.0
+	if total_chars_typed > 0:
+		accuracy = (correct_chars_typed / total_chars_typed) * 100.0
+
+	var final_score_text = "WPM: " + str(round(wpm)) + "  Accuracy: " + str(round(accuracy)) + "%"
+	score_label.text = final_score_text
+	last_score_label.text = "Last WPM: " + str(round(wpm))
+
+	if wpm > best_wpm:
+		best_wpm = wpm
+		update_best_wpm_label()
+		save_best_wpm()
+
+func _on_home_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://game.tscn")
