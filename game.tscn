@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dg737v37qvdy"]
+[gd_scene load_steps=15 format=3 uid="uid://dg737v37qvdy"]
 
 [ext_resource type="Texture2D" uid="uid://brf6tf13q20s5" path="res://assets/Backgrounds/pixel-art-illustration-space-background-pixelated-space-space-galaxy-universe-background-pixelated-for-the-pixel-art-game-and-icon-for-website-and-video-game-old-school-retro-vector.jpg" id="1_e2o6t"]
 [ext_resource type="Script" uid="uid://bgx7xfm5no5rx" path="res://game.gd" id="1_fc0e3"]
@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://kuq81f5f8pgh" path="res://assets/Backgrounds/091cc95737fd417103a9e805e0d779a8.jpg" id="2_feb5d"]
 [ext_resource type="Script" uid="uid://bmfre1m7tv3nj" path="res://speed_mode_bg.gd" id="5_7jktm"]
 [ext_resource type="Script" uid="uid://bwpix1ryl1bt1" path="res://speed_testbutton.gd" id="6_ryrav"]
+[ext_resource type="AudioStream" uid="uid://g47y2jpfbc7b" path="res://Audio/drone-high-tension-and-suspense-background-162365.mp3" id="7_vef74"]
+[ext_resource type="AudioStream" uid="uid://bv3c27jf75kkk" path="res://Audio/sunrise-114326.mp3" id="8_vef74"]
+[ext_resource type="AudioStream" uid="uid://bqc0n0byaha0v" path="res://Audio/jump.wav" id="9_vef74"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_7jktm"]
 font = ExtResource("2_fc0e3")
@@ -104,11 +107,30 @@ icon = SubResource("CompressedTexture2D_eow3j")
 script = ExtResource("6_ryrav")
 metadata/_edit_use_anchors_ = true
 
+[node name="SpeedTestSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_vef74")
+volume_db = -15.0
+
+[node name="GameModeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_vef74")
+volume_db = -15.0
+
+[node name="HomeBackgroundSong" type="AudioStreamPlayer" parent="."]
+volume_db = -25.0
+
+[node name="ButtonSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_vef74")
+volume_db = -10.0
+
 [connection signal="mouse_entered" from="GameMode-bg" to="." method="_on_game_modebg_mouse_entered"]
 [connection signal="mouse_exited" from="GameMode-bg" to="." method="_on_game_modebg_mouse_exited"]
 [connection signal="mouse_entered" from="GameMode-bg/Game Mode" to="." method="_on_game_mode_mouse_entered"]
 [connection signal="mouse_exited" from="GameMode-bg/Game Mode" to="." method="_on_game_mode_mouse_exited"]
+[connection signal="mouse_entered" from="GameMode-bg/GameModebutton" to="." method="_on_game_modebutton_mouse_entered"]
+[connection signal="mouse_exited" from="GameMode-bg/GameModebutton" to="." method="_on_game_modebutton_mouse_exited"]
 [connection signal="pressed" from="GameMode-bg/GameModebutton" to="." method="_on_game_modebutton_pressed"]
 [connection signal="mouse_entered" from="SpeedTest-bg" to="." method="_on_speed_testbg_mouse_entered"]
 [connection signal="mouse_exited" from="SpeedTest-bg" to="." method="_on_speed_testbg_mouse_exited"]
+[connection signal="mouse_entered" from="SpeedTest-bg/SpeedTestbutton" to="." method="_on_speed_testbutton_mouse_entered"]
+[connection signal="mouse_exited" from="SpeedTest-bg/SpeedTestbutton" to="." method="_on_speed_testbutton_mouse_exited"]
 [connection signal="pressed" from="SpeedTest-bg/SpeedTestbutton" to="." method="_on_speed_testbutton_pressed"]

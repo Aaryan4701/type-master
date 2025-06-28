@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1wo1wlbs60ky"]
+
+[ext_resource type="Texture2D" uid="uid://bo48mm3g1uvh3" path="res://assets/Spritesheet/sheet.png" id="1_qi2p4"]
+[ext_resource type="Script" uid="uid://cjteod3rf0v5h" path="res://enemy.gd" id="2_iifgy"]
+[ext_resource type="FontFile" uid="uid://chidp5gcuqf38" path="res://assets/Fonts/SpaceMono-Bold.ttf" id="3_epg4t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qi2p4"]
+size = Vector2(112.302, 78.6583)
+
+[node name="Enemy" type="CharacterBody2D"]
+position = Vector2(-21.637, -27.9478)
+rotation = -1.83186
+scale = Vector2(1.66395, 1.6242)
+script = ExtResource("2_iifgy")
+speed = 1.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = -52.0
+offset_top = -22.0
+offset_right = 108.0
+offset_bottom = 15.0
+rotation = 1.76111
+theme_override_fonts/normal_font = ExtResource("3_epg4t")
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "Type This!"
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_qi2p4")
+region_enabled = true
+region_rect = Rect2(112, 716, 112, 74)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.0645351, 3.50923)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_qi2p4")

@@ -15,6 +15,11 @@ run/main_scene="uid://dg737v37qvdy"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+PromptList="*res://PromptList.gd"
+GlobalSignals="*res://GlobalSignals.gd"
+
 [display]
 
 window/size/viewport_width=1920

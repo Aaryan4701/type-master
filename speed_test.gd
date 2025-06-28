@@ -19,6 +19,21 @@ var sample_texts = [
 	"Storytelling is one of the oldest and most powerful tools humans possess. Across generations, stories have preserved culture, shared lessons, and sparked imagination. From ancient cave paintings and oral traditions to printed books and streaming media, the way we tell stories has evolved—but the purpose remains. Stories entertain, teach, warn, and unite. They allow us to walk in someone else’s shoes, feel distant emotions, and understand complex issues. In every culture, storytelling shapes values, identity, and memory. A well-told tale lingers in the mind, inspiring thought and connection long after the final word. In today’s digital age, stories spread faster and farther than ever. Podcasts, games, films, and interactive media offer new ways to engage audiences. Whether it’s a personal anecdote or an epic saga, every story has the potential to move hearts and change minds. In the end, storytelling is more than communication—it’s the thread that binds people together."
 ]
 
+var python_texts = [
+
+"""print("Hello, world!") x = 5 y = 10 result = x + y print(result) name = "Alice" age = 12 print("Name:", name) print("Age:", age) for i in range(5): print(i) if x > y: print("x is greater") else: print("y is greater")""",
+
+"""message = "Typing in Python" print(message) number = 42 answer = number * 2 print("Answer:", answer) username = "user123" print("Welcome", username) items = 5 price = 10 total = items * price print("Total:", total) print("Done!")""",
+
+"""x = 1 y = 2 z = 3 total = x + y + z print("Total:", total) greeting = "Hi" print(greeting) if x < y: print("x is smaller") else: print("y is smaller") for i in range(3): print("Loop", i)""",
+
+"""day = "Monday" print("Today is", day) temp = 25 print("Temperature:", temp) name = "Bob" print("Hello", name) age = 17 print("Age:", age) score = 90 print("Score:", score) print("Program ended.")""",
+
+"""print("Python Practice") number = 100 print(number) a = 10 b = 20 print(a + b) word = "keyboard" print("Word:", word) print("Great job!") if a != b: print("Different values") print("Keep going!")""",
+
+]
+
+
 const MAX_CHARS_PER_CHUNK = 200
 
 # === Node Refs ===
@@ -28,7 +43,7 @@ const MAX_CHARS_PER_CHUNK = 200
 @onready var button15 = $CanvasLayer/Panel/TimerButtons/Button15
 @onready var button30 = $CanvasLayer/Panel/TimerButtons/Button30
 @onready var button60 = $CanvasLayer/Panel/TimerButtons/Button60
-
+@onready var LanguageMenu = $CanvasLayer/Panel/LanguageMenu
 # Stats Labels
 @onready var last_score_label = $CanvasLayer/StatsPanel/LastScore
 @onready var best_wpm_label = $CanvasLayer/StatsPanel/BestWPMLabel
@@ -61,6 +76,7 @@ func _ready() -> void:
 	button15.focus_mode = Control.FOCUS_NONE
 	button30.focus_mode = Control.FOCUS_NONE
 	button60.focus_mode = Control.FOCUS_NONE
+	LanguageMenu.focus_mode = Control.FOCUS_NONE
 
 	button15.pressed.connect(func(): start_game(15))
 	button30.pressed.connect(func(): start_game(30))
@@ -73,6 +89,7 @@ func _ready() -> void:
 
 	load_best_wpm()
 	update_best_wpm_label()
+	LanguageMenu.item_selected.connect(func(index): start_game(selected_time))
 
 	start_game(30)
 
@@ -109,7 +126,13 @@ func update_best_wpm_label():
 	best_wpm_label.text = "Best WPM: " + str(round(best_wpm))
 
 func start_new_round():
-	full_text = sample_texts[randi() % sample_texts.size()]
+	var selected_language = LanguageMenu.get_selected_id()
+	
+	if selected_language == 0:  # English
+		full_text = sample_texts[randi() % sample_texts.size()]
+	else:  # Python
+		full_text = python_texts[randi() % python_texts.size()]
+	
 	current_index = 0
 	chunk_start_index = 0
 	correctness = []
@@ -242,7 +265,7 @@ func calc_and_display_final_stats():
 
 	var final_score_text = "WPM: " + str(round(wpm)) + "  Accuracy: " + str(round(accuracy)) + "%"
 	score_label.text = final_score_text
-	last_score_label.text = "Last WPM: " + str(round(wpm))
+	last_score_label.text = "Last Round: " + final_score_text
 
 	if wpm > best_wpm:
 		best_wpm = wpm

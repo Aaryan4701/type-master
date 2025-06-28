@@ -1,11 +1,10 @@
-[gd_scene load_steps=22 format=3 uid="uid://hoihiocre20k"]
+[gd_scene load_steps=20 format=3 uid="uid://hoihiocre20k"]
 
 [ext_resource type="Script" uid="uid://qeoc8ykog7fc" path="res://speed_test.gd" id="1_egqdk"]
 [ext_resource type="Texture2D" uid="uid://ddn4lf0qhly7f" path="res://assets/Backgrounds/black-solid-background-1921-x-1081-pf5l44buz6skcf54.jpg" id="1_nd8mu"]
 [ext_resource type="FontFile" uid="uid://dp1pln75wnlhc" path="res://assets/Fonts/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf" id="2_nvhqq"]
 [ext_resource type="Texture2D" uid="uid://vwx4y6sbwmli" path="res://assets/Images/Screenshot_2025-06-11_at_11.15.36_am-removebg-preview.png" id="2_t4q2a"]
 [ext_resource type="FontFile" uid="uid://baaj78y1fnggm" path="res://assets/Fonts/Pixel 2/Pixeled.ttf" id="3_x2d51"]
-[ext_resource type="Texture2D" uid="uid://cu1bkt76k10ea" path="res://assets/Images/theme.svg" id="4_621di"]
 [ext_resource type="Script" uid="uid://det6w1ytx05hv" path="res://button_15.gd" id="4_c2ccg"]
 [ext_resource type="Script" uid="uid://b0nxhhwtdugt7" path="res://button_30.gd" id="4_t4q2a"]
 [ext_resource type="Script" uid="uid://b20tvr6qfhaab" path="res://button_60.gd" id="5_c6c5k"]
@@ -47,10 +46,6 @@ corner_radius_bottom_left = 20
 default_font = ExtResource("3_x2d51")
 default_font_size = 20
 
-[sub_resource type="Theme" id="Theme_621di"]
-default_font = ExtResource("3_x2d51")
-default_font_size = 20
-
 [sub_resource type="LabelSettings" id="LabelSettings_wxcvt"]
 font = ExtResource("12_crwti")
 font_size = 45
@@ -62,6 +57,7 @@ script = ExtResource("1_egqdk")
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("1_nd8mu")
+stretch_mode = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -69,26 +65,22 @@ texture = ExtResource("1_nd8mu")
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -676.5
-offset_right = 676.5
-offset_bottom = 146.0
+offset_left = -409.0
+offset_top = 1.0
+offset_right = 413.0
+offset_bottom = 147.0
 grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_wv0x8")
 
 [node name="Timerlogo" type="Sprite2D" parent="CanvasLayer/Panel"]
-position = Vector2(56.5, 66)
+position = Vector2(50, 66)
 scale = Vector2(0.168667, 0.261274)
 texture = ExtResource("2_t4q2a")
 
 [node name="Languagelogo" type="Sprite2D" parent="CanvasLayer/Panel"]
-position = Vector2(393.5, 77)
+position = Vector2(369, 76)
 scale = Vector2(0.251168, 0.236051)
 texture = ExtResource("7_c6c5k")
-
-[node name="Themelogo" type="Sprite2D" parent="CanvasLayer/Panel"]
-position = Vector2(697.5, 74)
-scale = Vector2(0.131875, 0.128125)
-texture = ExtResource("4_621di")
 
 [node name="TimerButtons" type="HBoxContainer" parent="CanvasLayer/Panel"]
 layout_mode = 1
@@ -96,9 +88,9 @@ anchors_preset = -1
 anchor_left = 0.495
 anchor_right = 0.54
 anchor_bottom = 0.019
-offset_left = -616.235
+offset_left = -371.89
 offset_top = 27.0
-offset_right = -329.12
+offset_right = -76.755
 offset_bottom = 124.226
 grow_horizontal = 2
 alignment = 1
@@ -129,31 +121,12 @@ script = ExtResource("5_c6c5k")
 
 [node name="LanguageMenu" type="OptionButton" parent="CanvasLayer/Panel"]
 layout_mode = 0
-offset_left = 467.0
+offset_left = 429.0
 offset_top = 43.0
-offset_right = 637.0
+offset_right = 599.0
 offset_bottom = 118.0
 theme = SubResource("Theme_biafy")
 script = ExtResource("7_biafy")
-
-[node name="ThemeMenu" type="MenuButton" parent="CanvasLayer/Panel"]
-layout_mode = 0
-offset_left = 748.5
-offset_top = 43.0
-offset_right = 918.5
-offset_bottom = 118.0
-theme = SubResource("Theme_621di")
-text = "THEME
-"
-flat = false
-item_count = 2
-popup/item_0/text = "Space"
-popup/item_0/checkable = 1
-popup/item_0/checked = true
-popup/item_0/id = 0
-popup/item_1/text = "Forest"
-popup/item_1/checkable = 1
-popup/item_1/id = 1
 
 [node name="ScoreLabel" type="Label" parent="CanvasLayer"]
 offset_left = 664.0
@@ -214,10 +187,10 @@ offset_right = 58.0
 offset_bottom = 103.0
 
 [node name="HomeButton" type="Button" parent="CanvasLayer"]
-offset_left = 1497.0
-offset_top = 8.0
-offset_right = 1619.0
-offset_bottom = 141.0
+offset_left = 1225.0
+offset_top = 11.0
+offset_right = 1347.0
+offset_bottom = 144.0
 icon = ExtResource("12_n0kci")
 expand_icon = true
 script = ExtResource("13_crwti")

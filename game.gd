@@ -6,10 +6,19 @@ func _on_speed_testbutton_pressed() -> void:
 
 func _on_game_modebutton_pressed() -> void:
 	get_tree().change_scene_to_file("res://game_mode.tscn")
+	
+func _on_speed_testbutton_mouse_entered() -> void:
+	$ButtonSound.play()
+	
+
+func _on_game_modebutton_mouse_entered() -> void:
+	$ButtonSound.play()
 
 
 #Adding animation when mouse hovers above the game mode section
 func _on_game_modebg_mouse_entered() -> void:
+	$SpeedTestSound.stop()
+	$GameModeSound.play()
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_OUT)
@@ -30,6 +39,8 @@ func _on_game_modebg_mouse_exited() -> void:
 
 #Adding animation when mouse hovers above the Speed test section
 func _on_speed_testbg_mouse_entered() -> void:
+	$GameModeSound.stop()
+	$SpeedTestSound.play()
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_OUT)
@@ -48,3 +59,6 @@ func _on_speed_testbg_mouse_exited() -> void:
 		tween.parallel().tween_property($"GameMode-bg", "position:x", 0, 0.2)
 		tween.parallel().tween_property($"SpeedTest-bg", "size:x", 960, 0.2)
 		tween.parallel().tween_property($"SpeedTest-bg", "position:x", 960, 0.2)
+		
+func _ready() -> void:
+	$HomeBackgroundSong.play()
