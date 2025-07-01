@@ -31,19 +31,19 @@ shape = SubResource("RectangleShape2D_ewu35")
 [node name="SpawnContainer" type="Node2D" parent="."]
 
 [node name="Marker2D" type="Marker2D" parent="SpawnContainer"]
-position = Vector2(1984, 296)
+position = Vector2(1979, 285)
 
 [node name="Marker2D2" type="Marker2D" parent="SpawnContainer"]
-position = Vector2(1983, 97)
+position = Vector2(1979, 69)
 
 [node name="Marker2D3" type="Marker2D" parent="SpawnContainer"]
-position = Vector2(1991, 507)
+position = Vector2(1983, 471)
 
 [node name="Marker2D4" type="Marker2D" parent="SpawnContainer"]
-position = Vector2(1990, 714)
+position = Vector2(1986, 676)
 
 [node name="Marker2D5" type="Marker2D" parent="SpawnContainer"]
-position = Vector2(1998, 923)
+position = Vector2(1988, 865)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
 
@@ -136,6 +136,18 @@ theme_override_font_sizes/font_size = 40
 text = " Diffuclty:"
 
 [node name="DifficultyValue" type="Label" parent="CanvasLayer/VBoxContainer/BottomRow/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_ewu35")
+theme_override_font_sizes/font_size = 40
+text = "0"
+
+[node name="HighScoreLabel" type="Label" parent="CanvasLayer/VBoxContainer/BottomRow/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_ewu35")
+theme_override_font_sizes/font_size = 40
+text = "  High Score:"
+
+[node name="HighScoreValue" type="Label" parent="CanvasLayer/VBoxContainer/BottomRow/HBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_ewu35")
 theme_override_font_sizes/font_size = 40

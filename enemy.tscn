@@ -5,7 +5,7 @@
 [ext_resource type="FontFile" uid="uid://chidp5gcuqf38" path="res://assets/Fonts/SpaceMono-Bold.ttf" id="3_epg4t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qi2p4"]
-size = Vector2(112.302, 78.6583)
+size = Vector2(107.014, 73.3049)
 
 [node name="Enemy" type="CharacterBody2D"]
 position = Vector2(-21.637, -27.9478)
@@ -15,10 +15,10 @@ script = ExtResource("2_iifgy")
 speed = 1.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_left = -52.0
-offset_top = -22.0
-offset_right = 108.0
-offset_bottom = 15.0
+offset_left = -44.3817
+offset_top = -27.6733
+offset_right = 115.618
+offset_bottom = 9.32669
 rotation = 1.76111
 theme_override_fonts/normal_font = ExtResource("3_epg4t")
 theme_override_font_sizes/normal_font_size = 25
@@ -28,11 +28,12 @@ scroll_active = false
 horizontal_alignment = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(5.60402, -5.36062)
+scale = Vector2(0.899928, 0.855118)
 texture = ExtResource("1_qi2p4")
 region_enabled = true
 region_rect = Rect2(112, 716, 112, 74)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.0645351, 3.50923)
-scale = Vector2(1, 1)
+position = Vector2(2.70848, 0.832506)
 shape = SubResource("RectangleShape2D_qi2p4")
